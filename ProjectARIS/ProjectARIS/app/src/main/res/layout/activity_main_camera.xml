@@ -34,12 +34,32 @@
             android:text="Resume"
             android:onClick="resume" />
 
-        <Button
+        <LinearLayout
+            android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Augment!"
-            android:onClick="augment"
-            android:id="@+id/button" />
+            android:weightSum="1"
+            android:gravity="bottom">
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Save"
+                android:onClick="save"
+                android:id="@+id/save"
+                android:layout_alignParentTop="true"
+                android:layout_alignEnd="@+id/centerHorizont"
+                android:layout_weight="1" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Augment!"
+                android:onClick="augment"
+                android:id="@+id/augment"
+                android:layout_alignParentTop="true"
+                android:layout_toEndOf="@+id/centerHorizont" />
+        </LinearLayout>
 
     </LinearLayout>
 

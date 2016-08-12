@@ -42,6 +42,7 @@ import java.io.*;
 import java.util.*;
 
 import android.content.res.AssetManager;
+import android.view.View;
 
 //The renderer class for the AR activity
 public class ARRenderer implements GLSurfaceView.Renderer {
@@ -130,7 +131,7 @@ public class ARRenderer implements GLSurfaceView.Renderer {
         world.setClippingPlanes(2.0f, 3000.0f);
 
         sun = new Light(world);
-        sun.setIntensity(250, 250, 250);
+        sun.setIntensity(25500, 25500, 25500);
 
         cam = world.getCamera();
         cam.setPosition(0,0,-20);
@@ -150,7 +151,8 @@ public class ARRenderer implements GLSurfaceView.Renderer {
             //FileInputStream fis = new FileInputStream("/src/main/assets/models/monster.jpg");
             AssetManager as = activity.getApplicationContext().getAssets();
             //TextureManager.getInstance().addTexture("monster.jpg", new Texture(fis));
-            TextureManager.getInstance().addTexture("monster.jpg", new Texture(as.open("models/monster.jpg")));
+            if (!TextureManager.getInstance().containsTexture("monster.jpg"))
+                TextureManager.getInstance().addTexture("monster.jpg", new Texture(as.open("models/monster.jpg")));
         } catch (FileNotFoundException fnfe) {
             Log.e("file not found: " + "monster", "file not found: " + "monster");
         } catch (IOException ioe) {
@@ -164,13 +166,14 @@ public class ARRenderer implements GLSurfaceView.Renderer {
 
         cam.lookAt(monster.getTransformedCenter());
 
-        /*SimpleVector sv = new SimpleVector();
+        SimpleVector sv = new SimpleVector();
         sv.set(monster.getTransformedCenter());
         sv.y += 100;
         sv.z += 100;
         sun.setPosition(sv);
-        */
-        sun.setPosition(cam.getPosition()); //Sets sun's pos to the cam's
+
+        //sun.setPosition(cam.getPosition()); //Sets sun's pos to the cam's
+
 
         //for older Android versions, which had massive problems with garbage collection
         MemoryHelper.compact();
@@ -299,6 +302,15 @@ public class ARRenderer implements GLSurfaceView.Renderer {
         //CBL: mActivity.loadingDialogHandler.sendEmptyMessage(LoadingDialogHandler.HIDE_LOADING_DIALOG);
     }
 
+    /*
+    <ProgressBar
+            style="@android:style/Widget.ProgressBar"
+            android:id="@+id/loading_indicator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true" />
+     */
     //jpct-ae
     //NOTE: cocokin sama cpp - DONE
     private void updateRendering(int width, int height) {
@@ -398,8 +410,8 @@ public class ARRenderer implements GLSurfaceView.Renderer {
             //Update SUN - start
             sun.setPosition(cam.getPosition());
             sun.rotate(cam.getDirection(), new SimpleVector(0,0,0));
-            updateRGB();
-            sun.setIntensity(r, g, b);
+            //updateRGB();
+            //sun.setIntensity(r, g, b);
             //Update SUN - end
 
         }

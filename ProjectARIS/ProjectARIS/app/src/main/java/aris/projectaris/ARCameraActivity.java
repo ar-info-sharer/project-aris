@@ -158,7 +158,9 @@ public class ARCameraActivity extends Activity implements VuforiaControl {
         }
 
         try {
-            vuforiaAppSession.resumeAR();
+            if (!getIntent().getBooleanExtra("mARInitialized", false)) {
+                vuforiaAppSession.resumeAR();
+            }
         } catch (VuforiaException e) {
             Log.e(LOGTAG, e.getString());
         }
@@ -201,6 +203,12 @@ public class ARCameraActivity extends Activity implements VuforiaControl {
 
         try {
             vuforiaAppSession.pauseAR();
+        } catch (VuforiaException e) {
+            Log.e(LOGTAG, e.getString());
+        }
+
+        try {
+            vuforiaAppSession.stopAR();
         } catch (VuforiaException e) {
             Log.e(LOGTAG, e.getString());
         }
@@ -462,10 +470,10 @@ public class ARCameraActivity extends Activity implements VuforiaControl {
     }
 
     public void goBack(View view) {
-        //TODO: fix bug when returning to Activity
         String qrContent = getIntent().getStringExtra("key"); //TODO
         Intent arIntent = new Intent(ARCameraActivity.this, MainCamera.class);
         arIntent.putExtra("key", qrContent); //Optional parameters
+        arIntent.putExtra("mARInitialized", true);
         ARCameraActivity.this.startActivity(arIntent);
     }
 
